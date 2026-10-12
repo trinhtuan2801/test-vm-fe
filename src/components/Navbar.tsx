@@ -5,7 +5,7 @@ const links = [
   { to: '/about', label: 'About' },
 ];
 
-const VERSION = '5';
+const VERSION = '6';
 
 export default function Navbar() {
   return (
