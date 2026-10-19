@@ -9,36 +9,36 @@ permissions:
   contents: read
 
 jobs:
-  deploy-vm1:
+  deploy-VM1:
     runs-on: ubuntu-latest
     steps:
       - name: Configure SSH for VM1
         env:
-          VM1_SSH_KEY: ${{ secrets.VM1_SSH_KEY }}
-          VM1_KNOWN_HOSTS: ${{ secrets.VM1_KNOWN_HOSTS }}
+          SSH_KEY: ${{ secrets.VM1_SSH_KEY }}
+          KNOWN_HOSTS: ${{ secrets.VM1_KNOWN_HOSTS }}
         run: |
           mkdir -p ~/.ssh
           chmod 700 ~/.ssh
 
-          printf '%s\n' "$VM1_SSH_KEY" > ~/.ssh/vm1_deploy_key
-          chmod 600 ~/.ssh/vm1_deploy_key
+          printf '%s\n' "$SSH_KEY" > ~/.ssh/VM1_deploy_key
+          chmod 600 ~/.ssh/VM1_deploy_key
 
-          printf '%s\n' "$VM1_KNOWN_HOSTS" > ~/.ssh/vm1_known_hosts
-          chmod 600 ~/.ssh/vm1_known_hosts
+          printf '%s\n' "$KNOWN_HOSTS" > ~/.ssh/VM1_known_hosts
+          chmod 600 ~/.ssh/VM1_known_hosts
 
       - name: Deploy to VM1
         env:
-          VM1_HOST: ${{ secrets.VM1_HOST }}
-          VM1_USER: ${{ secrets.VM1_USER }}
-          VM1_BUILD_SCRIPT: ${{ secrets.VM1_BUILD_SCRIPT }}
+          HOST: ${{ secrets.VM1_HOST }}
+          USER: ${{ secrets.VM1_USER }}
+          BUILD_SCRIPT: ${{ secrets.VM1_BUILD_SCRIPT }}
         run: |
-          raw_path="$(printf '%s' "$VM1_BUILD_SCRIPT" | tr -d '\r' | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//')"
+          raw_path="$(printf '%s' "$BUILD_SCRIPT" | tr -d '\r' | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//')"
           quoted_path="$(printf '%q' "$raw_path")"
 
-          ssh -i ~/.ssh/vm1_deploy_key \
+          ssh -i ~/.ssh/VM1_deploy_key \
             -o IdentitiesOnly=yes \
-            -o UserKnownHostsFile=~/.ssh/vm1_known_hosts \
-            "$VM1_USER@$VM1_HOST" \
+            -o UserKnownHostsFile=~/.ssh/VM1_known_hosts \
+            "$USER@$HOST" \
             "bash -s -- $quoted_path" <<'REMOTE'
           set -euo pipefail
 
@@ -65,36 +65,36 @@ jobs:
           bash "$script"
           REMOTE
 
-  deploy-vm2:
+  deploy-VM2:
     runs-on: ubuntu-latest
     steps:
       - name: Configure SSH for VM2
         env:
-          VM2_SSH_KEY: ${{ secrets.VM2_SSH_KEY }}
-          VM2_KNOWN_HOSTS: ${{ secrets.VM2_KNOWN_HOSTS }}
+          SSH_KEY: ${{ secrets.VM2_SSH_KEY }}
+          KNOWN_HOSTS: ${{ secrets.VM2_KNOWN_HOSTS }}
         run: |
           mkdir -p ~/.ssh
           chmod 700 ~/.ssh
 
-          printf '%s\n' "$VM2_SSH_KEY" > ~/.ssh/vm2_deploy_key
-          chmod 600 ~/.ssh/vm2_deploy_key
+          printf '%s\n' "$SSH_KEY" > ~/.ssh/VM2_deploy_key
+          chmod 600 ~/.ssh/VM2_deploy_key
 
-          printf '%s\n' "$VM2_KNOWN_HOSTS" > ~/.ssh/vm2_known_hosts
-          chmod 600 ~/.ssh/vm2_known_hosts
+          printf '%s\n' "$KNOWN_HOSTS" > ~/.ssh/VM2_known_hosts
+          chmod 600 ~/.ssh/VM2_known_hosts
 
       - name: Deploy to VM2
         env:
-          VM2_HOST: ${{ secrets.VM2_HOST }}
-          VM2_USER: ${{ secrets.VM2_USER }}
-          VM2_BUILD_SCRIPT: ${{ secrets.VM2_BUILD_SCRIPT }}
+          HOST: ${{ secrets.VM2_HOST }}
+          USER: ${{ secrets.VM2_USER }}
+          BUILD_SCRIPT: ${{ secrets.VM2_BUILD_SCRIPT }}
         run: |
-          raw_path="$(printf '%s' "$VM2_BUILD_SCRIPT" | tr -d '\r' | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//')"
+          raw_path="$(printf '%s' "$BUILD_SCRIPT" | tr -d '\r' | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//')"
           quoted_path="$(printf '%q' "$raw_path")"
 
-          ssh -i ~/.ssh/vm2_deploy_key \
+          ssh -i ~/.ssh/VM2_deploy_key \
             -o IdentitiesOnly=yes \
-            -o UserKnownHostsFile=~/.ssh/vm2_known_hosts \
-            "$VM2_USER@$VM2_HOST" \
+            -o UserKnownHostsFile=~/.ssh/VM2_known_hosts \
+            "$USER@$HOST" \
             "bash -s -- $quoted_path" <<'REMOTE'
           set -euo pipefail
 
