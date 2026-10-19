@@ -2,7 +2,7 @@
 
 `deploy.yml` SSHes from GitHub Actions into a GCloud VM and runs a build script that already lives on that VM. Each VM is its own job. Jobs do not share a shell, so env names inside a job stay the same. Secret names carry that id, because GitHub secrets belong to the repository, not to a job.
 
-`deploy-VM1` and `deploy-VM2` are the pattern. Copy one of them when you add another VM.
+`deploy-VM1` is the pattern. Copy one of them when you add another VM.
 
 Do not edit this document after adding a job. New jobs go only in `deploy.yml`. The examples above stay as the pattern.
 
@@ -32,7 +32,7 @@ On the VM, append the matching **public** key to that user's `~/.ssh/authorized_
 
 ## 2. Copy a job
 
-In `.github/workflows/deploy.yml`, duplicate the whole `deploy-VM1:` (or `deploy-VM2:`) block, including both steps. Keep it under `jobs:`, as a sibling of the existing jobs.
+In `.github/workflows/deploy.yml`, duplicate the whole `deploy-VM1:` block, including both steps. Keep it under `jobs:`, as a sibling of the existing jobs.
 
 Then change only these spots. Env names (`SSH_KEY`, `KNOWN_HOSTS`, `HOST`, `USER`, `BUILD_SCRIPT`) stay as they are.
 
