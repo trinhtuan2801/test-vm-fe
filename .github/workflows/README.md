@@ -4,6 +4,8 @@
 
 `deploy-VM1` and `deploy-VM2` are the pattern. Copy one of them when you add another VM.
 
+Do not edit this document after adding a job. New jobs go only in `deploy.yml`. The examples above stay as the pattern.
+
 ## 1. Create the secrets
 
 In the repo: **Settings → Secrets and variables → Actions → New repository secret**.
